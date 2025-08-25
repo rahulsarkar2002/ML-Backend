@@ -10,6 +10,8 @@ import numpy as np
 app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
 
 # ✅ Load the model when the app starts (not only in __main__)
 util.load_saved_artifacts()
@@ -42,4 +44,7 @@ def predict_digit():
 
 if __name__ == "__main__":
     print("Starting Python Flask Server For Handwritten Digit Prediction...")
-    app.run(debug=True)
+    util.load_saved_artifacts()
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
+
